@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ================================================================ -->
+  <!--  GAZEBO PLUGINS XACRO                                            -->
+  <!--  Contains: link materials/friction, DiffDrive, JointStatePublisher -->
+  <!-- ================================================================ -->
+
+  <!-- ================================================================ -->
+  <!--  Gazebo Material / Friction Properties                           -->
+  <!-- ================================================================ -->
+
+  <!-- Base Link -->
+  <gazebo reference="base_link">
+    <material>Gazebo/Yellow</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+  </gazebo>
+
+  <!-- Left Rear Wheel -->
+  <gazebo reference="left_rear_wheel">
+    <material>Gazebo/Black</material>
+    <mu1>1.5</mu1>
+    <mu2>1.5</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+  </gazebo>
+
+  <!-- Right Rear Wheel -->
+  <gazebo reference="right_rear_wheel">
+    <material>Gazebo/Black</material>
+    <mu1>1.5</mu1>
+    <mu2>1.5</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+  </gazebo>
+
+  <!-- Left Front Wheel -->
+  <gazebo reference="left_front_wheel">
+    <material>Gazebo/Black</material>
+    <mu1>1.5</mu1>
+    <mu2>1.5</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+  </gazebo>
+
+  <!-- Right Front Wheel -->
+  <gazebo reference="right_front_wheel">
+    <material>Gazebo/Black</material>
+    <mu1>1.5</mu1>
+    <mu2>1.5</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+  </gazebo>
+
+  <!-- ================================================================ -->
+  <!--  Differential Drive Plugin                                       -->
+  <!--  NOTE: left/right are swapped intentionally to match your       -->
+  <!--  original URDF's physical layout.                                -->
+  <!--  left_joint  → right side mesh joints (rightfrontwheel etc.)    -->
+  <!--  right_joint → left  side mesh joints (leftfrontwheel  etc.)    -->
+  <!-- ================================================================ -->
+  <gazebo>
+    <plugin filename="ignition-gazebo-diff-drive-system"
+            name="ignition::gazebo::systems::DiffDrive">
+      <!-- Left side (mapped to right mesh joints as in original) -->
+      <left_joint>rightfrontwheel</left_joint>
+      <left_joint>rightrearwheel</left_joint>
+      <!-- Right side (mapped to left mesh joints as in original) -->
+      <right_joint>leftfrontwheel</right_joint>
+      <right_joint>leftrearwheel</right_joint>
+
+      <wheel_separation>0.1471</wheel_separation>
+      <wheel_radius>0.033</wheel_radius>
+
+      <odom_publish_frequency>50</odom_publish_frequency>
+
+      <topic>cmd_vel</topic>
+      <odom_topic>odom</odom_topic>
+      <tf_topic>tf</tf_topic>
+
+      <frame_id>odom</frame_id>
+      <child_frame_id>base_link</child_frame_id>
+
+      <publish_odom_tf>false</publish_odom_tf>
+      <publish_wheel_tf>true</publish_wheel_tf>
+    </plugin>
+  </gazebo>
+
+  <!-- ================================================================ -->
+  <!--  Joint State Publisher Plugin                                    -->
+  <!-- ================================================================ -->
+  <gazebo>
+    <plugin filename="ignition-gazebo-joint-state-publisher-system"
+            name="ignition::gazebo::systems::JointStatePublisher">
+      <topic>joint_states</topic>
+    </plugin>
+  </gazebo>
+
+</robot>

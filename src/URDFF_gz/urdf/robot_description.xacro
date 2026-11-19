@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  URDFF_gz — Top-Level Xacro                                  ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║  Includes:                                                   ║
+  ║    1. robot.urdf.xacro     → base + wheel links/joints       ║
+  ║    2. sensors.xacro        → IMU, LiDAR, Camera              ║
+  ║    3. gazebo_plugins.xacro → materials, DiffDrive, JSP       ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<robot name="URDFF_gz" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- 1 ─ Base robot: links, joints, wheel macros -->
+  <xacro:include filename="$(find URDFF_gz)/urdf/robot.urdf.xacro"/>
+
+  <!-- 2 ─ Sensors: IMU, YDLIDAR X2, RS680 Camera -->
+  <xacro:include filename="$(find URDFF_gz)/urdf/sensors.xacro"/>
+
+  <!-- 3 ─ Gazebo: materials, DiffDrive plugin, JointStatePublisher -->
+  <xacro:include filename="$(find URDFF_gz)/urdf/gazebo_plugins.xacro"/>
+
+</robot>

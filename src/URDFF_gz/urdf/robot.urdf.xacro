@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<robot name="URDFF_gz" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ===================================================== -->
+  <!--  Robot Properties                                     -->
+  <!-- ===================================================== -->
+  <xacro:property name="wheel_radius"     value="0.033"/>
+  <xacro:property name="wheel_separation" value="0.1471"/>
+  <xacro:property name="wheel_damping"    value="0.1"/>
+  <xacro:property name="wheel_friction"   value="0.1"/>
+  <xacro:property name="wheel_effort"     value="100"/>
+  <xacro:property name="wheel_velocity"   value="100"/>
+
+  <!-- ===================================================== -->
+  <!--  Wheel Macro                                          -->
+  <!-- ===================================================== -->
+  <xacro:macro name="wheel_link" params="name mesh_file color_r color_g color_b">
+    <link name="${name}">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.0310322138231813"/>
+        <inertia
+          ixx="1.37618924502922E-05"
+          ixy="0"
+          ixz="0"
+          iyy="1.37620600377143E-05"
+          iyz="0"
+          izz="2.28600342994284E-05"/>
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://URDFF_gz/meshes/${mesh_file}"/>
+        </geometry>
+        <material name="">
+          <color rgba="${color_r} ${color_g} ${color_b} 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://URDFF_gz/meshes/${mesh_file}"/>
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="wheel_joint" params="name parent child x y z">
+    <joint name="${name}" type="continuous">
+      <origin xyz="${x} ${y} ${z}" rpy="-1.5708 0 0"/>
+      <parent link="${parent}"/>
+      <child  link="${child}"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${wheel_effort}" velocity="${wheel_velocity}"/>
+      <dynamics damping="${wheel_damping}" friction="${wheel_friction}"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- ===================================================== -->
+  <!--  Base Link                                            -->
+  <!-- ===================================================== -->
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0.0121459734710621 0.000198241570210142 0.0449906840595474" rpy="0 0 0"/>
+      <mass value="1.00796524149794"/>
+      <inertia
+        ixx="0.000664022840014205"
+        ixy="3.36477372709559E-06"
+        ixz="-6.46022439037541E-06"
+        iyy="0.00190520705036307"
+        iyz="5.00471440887707E-10"
+        izz="0.00244406959005576"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 3.14159265359"/>
+      <geometry>
+        <mesh filename="package://URDFF_gz/meshes/base_link.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.012 0 0.045" rpy="0 0 3.14159265359"/>
+      <geometry>
+        <mesh filename="package://URDFF_gz/meshes/base_link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- ===================================================== -->
+  <!--  Wheels                                               -->
+  <!-- ===================================================== -->
+
+  <!-- Left Rear Wheel -->
+  <xacro:wheel_link
+    name="left_rear_wheel"
+    mesh_file="left_rear_wheel.STL"
+    color_r="0.298039215686275"
+    color_g="0.298039215686275"
+    color_b="0.298039215686275"/>
+
+  <xacro:wheel_joint
+    name="leftrearwheel"
+    parent="base_link"
+    child="left_rear_wheel"
+    x="0.0588"  y="-0.07355" z="0.011"/>
+
+  <!-- Right Rear Wheel -->
+  <xacro:wheel_link
+    name="right_rear_wheel"
+    mesh_file="right_rear_wheel.STL"
+    color_r="0.298039215686275"
+    color_g="0.298039215686275"
+    color_b="0.298039215686275"/>
+
+  <xacro:wheel_joint
+    name="rightrearwheel"
+    parent="base_link"
+    child="right_rear_wheel"
+    x="0.058826" y="0.07355"  z="0.011"/>
+
+  <!-- Left Front Wheel -->
+  <xacro:wheel_link
+    name="left_front_wheel"
+    mesh_file="left_front_wheel.STL"
+    color_r="0.298039215686275"
+    color_g="0.298039215686275"
+    color_b="0.298039215686275"/>
+
+  <xacro:wheel_joint
+    name="leftfrontwheel"
+    parent="base_link"
+    child="left_front_wheel"
+    x="-0.058826" y="-0.07355" z="0.011"/>
+
+  <!-- Right Front Wheel -->
+  <xacro:wheel_link
+    name="right_front_wheel"
+    mesh_file="right_front_wheel.STL"
+    color_r="0.298039215686275"
+    color_g="0.298039215686275"
+    color_b="0.298039215686275"/>
+
+  <xacro:wheel_joint
+    name="rightfrontwheel"
+    parent="base_link"
+    child="right_front_wheel"
+    x="-0.0588" y="0.07355"  z="0.011"/>
+
+</robot>

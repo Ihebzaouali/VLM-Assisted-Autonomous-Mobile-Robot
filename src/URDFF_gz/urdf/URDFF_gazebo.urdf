@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="URDFF_gz">
+  
+  <!-- Base Link -->
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0.0121459734710621 0.000198241570210142 0.0449906840595474" rpy="0 0 0" />
+      <mass value="1.00796524149794" />
+      <inertia
+        ixx="0.000664022840014205"
+        ixy="3.36477372709559E-06"
+        ixz="-6.46022439037541E-06"
+        iyy="0.00190520705036307"
+        iyz="5.00471440887707E-10"
+        izz="0.00244406959005576" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 3.14159265359" />
+      <geometry>
+        <mesh filename="package://URDFF_gz/meshes/base_link.STL" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.012 0 0.045" rpy="0 0 3.14159265359" />
+      <geometry>
+        <mesh filename="package://URDFF_gz/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <gazebo reference="base_link">
+    <material>Gazebo/Yellow</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+  </gazebo>
+  
+  <!-- IMU Link -->
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.01"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5"/>
+    </inertial>
+    <visual>
+      <geometry>
+        <box size="0.02 0.02 0.01"/>
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <!-- IMU Joint -->
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+  </joint>
+
+  <gazebo reference="imu_link">
+    <sensor name="imu_sensor" type="imu">
+      <always_on>1</always_on>
+      <update_rate>100</update_rate>
+      <visualize>true</visualize>
+      <topic>imu</topic>
+      <gz_frame_id>imu_link</gz_frame_id>
+      
+      <plugin filename="ignition-gazebo-imu-system" name="ignition::gazebo::systems::Imu">
+      </plugin>
+      
+      <imu>
+        <angular_velocity>
+          <x><noise type="gaussian"><mean>0.0</mean><stddev>2e-5</stddev></noise></x>
+          <y><noise type="gaussian"><mean>0.0</mean><stddev>2e-5</stddev></noise></y>
+          <z><noise type="gaussian"><mean>0.0</mean><stddev>2e-5</stddev></noise></z>
+        </angular_velocity>
+        <linear_acceleration>
+          <x><noise type="gaussian"><mean>0.0</mean><stddev>1.7e-4</stddev></noise></x>
+          <y><noise type="gaussian"><mean>0.0</mean><stddev>1.7e-4</stddev></noise></y>
+          <z><noise type="gaussian"><mean>0.0</mean><stddev>1.7e-4</stddev></noise></z>
+        </linear_acceleration>
+      </imu>
+    </sensor>
+  </gazebo>
+
+  <!-- Left Rear Wheel -->
+  <link
+    name="left_rear_wheel">
+    <inertial>
+      <origin
+        xyz="1.35729605624246E-07 -2.06106699485176E-08 -0.00608684999317365"
+        rpy="0 0 0" />
+      <mass
+        value="0.0310322138231813" />
+      <inertia
+        ixx="1.37618924502922E-05"
+        ixy="-1.82191959281168E-11"
+        ixz="-4.10623036677133E-11"
+        iyy="1.37620600377143E-05"
+        iyz="3.77638956702527E-10"
+        izz="2.28600342994284E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://URDFF_gz/meshes/left_rear_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.298039215686275 0.298039215686275 0.298039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://URDFF_gz/meshes/left_rear_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  
+  <!-- Left Rear Joint -->
+  <joint
+    name="leftrearwheel"
+    type="continuous">
+    <origin
+      xyz="0.0588 -0.07355 0.011"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="left_rear_wheel" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="100"
+      velocity="100" />
+    <dynamics
+      damping="0.1"
+      friction="0.1" />
+  </joint>
+  
+  <gazebo reference="left_rear_wheel">
+    <material>Gazebo/Black</material>
+    <mu1>1.5</mu1>
+    <mu2>1.5</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+  </gazebo>
+  
+  <!-- Right Rear Wheel -->
+  <link
+    name="right_rear_wheel">
+    <inertial>
+      <origin
+        xyz="-1.35729605582613E-07 -2.06106702729109E-08 0.00608684999317374"
+        rpy="0 0 0" />
+      <mass
+        value="0.0310322138231813" />
+      <inertia
+        ixx="1.37618924502922E-05"
+        ixy="1.82191959023425E-11"
+        ixz="-4.10623037177905E-11"
+        iyy="1.37620600377143E-05"
+        iyz="-3.77638956616702E-10"
+        izz="2.28600342994284E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://URDFF_gz/meshes/right_rear_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.298039215686275 0.298039215686275 0.298039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://URDFF_gz/meshes/right_rear_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  
+  <!-- Right Rear Joint -->
+  <joint
+    name="rightrearwheel"
+    type="continuous">
+    <origin
+      xyz="0.058826 0.07355 0.011"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="right_rear_wheel" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="100"
+      velocity="100" />
+    <dynamics
+      damping="0.1"
+      friction="0.1" />
+  </joint>
+  
+  <gazebo reference="right_rear_wheel">
+    <material>Gazebo/Black</material>
+    <mu1>1.5</mu1>
+    <mu2>1.5</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+  </gazebo>
+  
+  <!-- Left Front Wheel -->
+  <link
+    name="left_front_wheel">
+    <inertial>
+      <origin
+        xyz="1.35729605582613E-07 -2.06106702711761E-08 -0.00608684999317372"
+        rpy="0 0 0" />
+      <mass
+        value="0.0310322138231813" />
+      <inertia
+        ixx="1.37618924502922E-05"
+        ixy="-1.82191959016201E-11"
+        ixz="-4.10623037178628E-11"
+        iyy="1.37620600377143E-05"
+        iyz="3.77638956616653E-10"
+        izz="2.28600342994284E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://URDFF_gz/meshes/left_front_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.298039215686275 0.298039215686275 0.298039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://URDFF_gz/meshes/left_front_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  
+  <!-- Left Front Joint -->
+  <joint
+    name="leftfrontwheel"
+    type="continuous">
+    <origin
+      xyz="-0.058826 -0.07355 0.011"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="left_front_wheel" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="100"
+      velocity="100" />
+    <dynamics
+      damping="0.1"
+      friction="0.1" />
+  </joint>
+  
+  <gazebo reference="left_front_wheel">
+    <material>Gazebo/Black</material>
+    <mu1>1.5</mu1>
+    <mu2>1.5</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+  </gazebo>
+  
+  <!-- Right Front Wheel -->
+  <link
+    name="right_front_wheel">
+    <inertial>
+      <origin
+        xyz="-1.3572960585323E-07 -2.06106701098469E-08 0.00608684999317363"
+        rpy="0 0 0" />
+      <mass
+        value="0.0310322138231806" />
+      <inertia
+        ixx="1.37618924502919E-05"
+        ixy="1.82191959211016E-11"
+        ixz="-4.10623037049307E-11"
+        iyy="1.3762060037714E-05"
+        iyz="-3.7763895669176E-10"
+        izz="2.28600342994278E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://URDFF_gz/meshes/right_front_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.298039215686275 0.298039215686275 0.298039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://URDFF_gz/meshes/right_front_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  
+  <!-- Right Front Joint -->
+  <joint
+    name="rightfrontwheel"
+    type="continuous">
+    <origin
+      xyz="-0.0588 0.07355 0.011"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="right_front_wheel" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      effort="100"
+      velocity="100" />
+    <dynamics
+      damping="0.1"
+      friction="0.1" />
+  </joint>
+  
+  <gazebo reference="right_front_wheel">
+    <material>Gazebo/Black</material>
+    <mu1>1.5</mu1>
+    <mu2>1.5</mu2>
+    <kp>1000000.0</kp>
+    <kd>100.0</kd>
+  </gazebo>
+
+  <!-- LiDAR Link -->
+  <link name="lidar_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.125"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.03" length="0.01"/>
+      </geometry>
+      <material name="lidar_jaune">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.03" length="0.01"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- LiDAR Joint -->
+  <joint name="lidar_joint" type="fixed">
+    <origin xyz="0.068 0 0.12" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
+  </joint>
+
+  <!-- YDLIDAR X2 Sensor Configuration (Official Specs) -->
+  <gazebo reference="lidar_link">
+    <material>Gazebo/Black</material>
+    <sensor name="ydlidar_x2" type="gpu_lidar">
+      <gz_frame_id>lidar_link</gz_frame_id>
+      <topic>scan</topic>
+      <update_rate>6</update_rate>  <!-- Scan Frequency: 5-8Hz (using 6Hz average) -->
+      <lidar>
+        <scan>
+          <horizontal>
+            <!-- Angle Resolution: 0.6-0.96° → using 0.78° average
+                 360° / 0.78° ≈ 462 samples -->
+            <samples>462</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.14159</min_angle>  <!-- 360° full scan -->
+            <max_angle>3.14159</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <!-- Range Distance: 0.12-8m (Official spec) -->
+          <min>0.12</min>
+          <max>8.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.015</stddev>  <!-- Realistic noise for triangulation lidar -->
+        </noise>
+      </lidar>
+      <!-- Range Frequency: 3000Hz (3kHz sampling rate) -->
+      <always_on>1</always_on>
+      <visualize>true</visualize>
+    </sensor>
+  </gazebo>
+  <!-- CAMERA Link - Webcam Nano RS RS680 HD 1080P -->
+  <link name="camera_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.08"/>  <!-- Poids estimé ~80g pour webcam USB -->
+      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <!-- Petite webcam compacte -->
+        <box size="0.01 0.01 0.03"/>
+      </geometry>
+      <material name="camera_jaune">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.001 0.001 0.03"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- CAMERA Joint -->
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0.078 0 0.09" rpy="0 0 0"/>  <!-- Devant le robot -->
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+  </joint>
+
+  <!-- CAMERA Optical Frame (pour ROS) -->
+  <link name="camera_optical_link"/>
+  
+  <joint name="camera_optical_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="-1.5707963267948966 0 -1.5707963267948966"/>
+    <parent link="camera_link"/>
+    <child link="camera_optical_link"/>
+  </joint>
+
+  <!-- CAMERA Sensor - Webcam Nano RS RS680 HD 1080P Specs -->
+  <gazebo reference="camera_link">
+    <material>Gazebo/Black</material>
+    <sensor name="rs680_camera" type="camera">
+      <gz_frame_id>camera_link</gz_frame_id>
+      <topic>camera</topic>
+      <update_rate>30</update_rate>  <!-- 30 FPS officiel -->
+      <camera name="rs680_webcam">
+        <horizontal_fov>1.5708</horizontal_fov>  <!-- 90° angle de vue -->
+        <image>
+          <width>1920</width>  <!-- Full HD 1080p -->
+          <height>1080</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.2</near>  <!-- Mise au point: 5cm minimum -->
+          <far>100</far>    <!-- À l'infini -->
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.005</stddev>  <!-- Bonne qualité HD -->
+        </noise>
+        <lens>
+          <intrinsics>
+            <!-- Calibration pour 1920x1080 à 90° FOV -->
+            <fx>960</fx>
+            <fy>960</fy>
+            <cx>960</cx>
+            <cy>540</cy>
+            <s>0</s>
+          </intrinsics>
+          <distortion>
+            <k1>0.0</k1>
+            <k2>0.0</k2>
+            <k3>0.0</k3>
+            <p1>0.0</p1>
+            <p2>0.0</p2>
+            <center>0.5 0.5</center>
+          </distortion>
+        </lens>
+      </camera>
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+    </sensor>
+  </gazebo>
+
+
+  <!-- Differential Drive Plugin -->
+  <gazebo>
+    <plugin filename="ignition-gazebo-diff-drive-system" name="ignition::gazebo::systems::DiffDrive">
+      <left_joint>rightfrontwheel</left_joint>
+      <left_joint>rightrearwheel</left_joint>
+      <right_joint>leftfrontwheel</right_joint>
+      <right_joint>leftrearwheel</right_joint>
+      <wheel_separation>0.1471</wheel_separation>
+      <wheel_radius>0.033</wheel_radius>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <topic>cmd_vel</topic>
+      <odom_topic>odom</odom_topic>
+      <tf_topic>tf</tf_topic>
+      <frame_id>odom</frame_id>
+      <child_frame_id>base_link</child_frame_id>
+      <publish_odom_tf>false</publish_odom_tf>
+      <publish_wheel_tf>true</publish_wheel_tf>
+    </plugin>
+  </gazebo>
+  
+  <gazebo>
+    <plugin filename="ignition-gazebo-joint-state-publisher-system" 
+            name="ignition::gazebo::systems::JointStatePublisher">
+      <topic>joint_states</topic>
+    </plugin>
+  </gazebo>
+
+</robot>
