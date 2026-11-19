@@ -1,12 +1,6 @@
 # VLM-Assisted Autonomous Mobile Robot  
 Autonomous mobile robot for target detection, collection and transport, combining LiDAR-based obstacle avoidance with vision-based target recognition. Integrated a VLM for high-level strategic adaptation and mission supervision, on top of a classical navigation stack for robust execution. Validated the complete autonomous navigation system in Gazebo simulation and on a physical robot.
 
-# VLM-Assisted Autonomous Mobile Robot
-
-An autonomous mobile robot that detects, collects and transports targets. A vision-language model (VLM) supervises the mission and adapts the high-level strategy, while a classical navigation stack handles motion for robust execution.
-
-> TODO: add a demo GIF or video link here (simulation and real robot).
-
 ## Features
 
 - **Autonomous navigation** with SLAM and Nav2
