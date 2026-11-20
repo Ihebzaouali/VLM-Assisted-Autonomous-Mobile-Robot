@@ -57,7 +57,7 @@ src/
 | Topic | Type | Direction |
 |-------|------|-----------|
 | `/user_command` | `std_msgs/String` | `command_sender` → `vlm_node` |
-| `/target_cubes` | `std_msgs/String` (JSON `{"target_colors": [...]}`) | `vlm_node` → (see [limitations](#-current-status-and-limitations)) |
+| `/target_cubes` | `std_msgs/String` (JSON `{"target_colors": [...]}`) | `vlm_node` |
 | `/camera` | `sensor_msgs/Image` | Gazebo → `vlm_node`, `cube_pusher_node` |
 | `/scan` | `sensor_msgs/LaserScan` | Gazebo → Nav2, `cube_pusher_node` |
 | `/odom`, `/imu` | `nav_msgs/Odometry`, `sensor_msgs/Imu` | Gazebo → EKF |
