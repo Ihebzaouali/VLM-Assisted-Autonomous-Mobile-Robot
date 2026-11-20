@@ -174,15 +174,6 @@ ros2 run nav2_map_server map_saver_cli -f classroom_map
 
 ---
 
-## 🚧 Current status and limitations
-
-- **VLM → collector link:** `vlm_node` publishes the chosen colours on `/target_cubes`, but `cube_pusher_node` does not subscribe to it yet. The collector currently processes all four cubes, nearest first, regardless of the command.
-- **Cube positions are hard-coded** in `cube_pusher_node.py` (`CUBES`) and in the mock VLM. The HSV colour detection is currently shown as an overlay in the camera window and is not used to control the robot. The real VLM returns colours and text descriptions only, not coordinates.
-- **Motion control:** `cube_pusher_node` publishes directly on `/cmd_vel` using its own controller; it does not send goals to Nav2. Nav2 and AMCL are set up and usable from RViz.
-- Validated in simulation. <!-- Add your physical-robot setup here (hardware, sensors, results) if you want to document it. -->
-
----
-
 ## 🛠️ Troubleshooting
 
 - **Gazebo window is black or fails to start on a machine without an NVIDIA GPU:** `gazebo.launch.py` sets `__NV_PRIME_RENDER_OFFLOAD` and `__GLX_VENDOR_LIBRARY_NAME=nvidia`. Remove these two entries from `additional_env` on non-NVIDIA setups.
@@ -191,7 +182,3 @@ ros2 run nav2_map_server map_saver_cli -f classroom_map
 - **Out of GPU memory:** run the mock VLM (omit `-p use_real_vlm:=true`).
 
 ---
-
-## 📄 License
-
-<!-- TODO: add a LICENSE file (e.g. MIT or Apache-2.0) and align the <license> tags in each package.xml -->
