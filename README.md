@@ -182,3 +182,7 @@ ros2 run nav2_map_server map_saver_cli -f classroom_map
 - **Out of GPU memory:** run the mock VLM (omit `-p use_real_vlm:=true`).
 
 ---
+
+## 📄 License
+ 
+Released under the [MIT License](LICENSE).
